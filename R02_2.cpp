@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string.h>
 
 using namespace std;
 
@@ -65,42 +66,44 @@ void skaityti(int &n, int &m, Slidininkas slidininkai[]) {
     fin.close();
 }
 
-void suskaiciuotiLaika(int n, Slidininkas slidininkai[]) {
+void suskaiciuotiLaika(int n, Slidininkas mas[]) {
     int sLaikSek, fLaikSek;
     double skirtSek;
 
     for(int i = 0; i < n; i++) {
-        if(!slidininkai[i].diskv) {
-            sLaikSek = (slidininkai[i].sVal*60*60)+(slidininkai[i].sMin*60)+slidininkai[i].sSek;
-            fLaikSek = (slidininkai[i].fVal*60*60)+(slidininkai[i].fMin*60)+slidininkai[i].fSek;
+        if(!mas[i].diskv) {
+            sLaikSek = (mas[i].sVal*60*60)+(mas[i].sMin*60)+mas[i].sSek;
+            fLaikSek = (mas[i].fVal*60*60)+(mas[i].fMin*60)+mas[i].fSek;
             skirtSek = fLaikSek-sLaikSek;
             if(skirtSek<0) {
                skirtSek = 86400+skirtSek;
             }
 
-            slidininkai[i].lMin = (int)(skirtSek/60);
-            slidininkai[i].lSek = skirtSek-slidininkai[i].lMin*60;
-            slidininkai[i].skirtSek = skirtSek;
+            mas[i].lMin = (int)(skirtSek/60);
+            mas[i].lSek = skirtSek-mas[i].lMin*60;
+            mas[i].skirtSek = skirtSek;
         }
     }
 }
 
-void isrinktiNugaletojus(int n, int &r, Slidininkas slidininkai[], Slidininkas nugaletojai[]) {
+void isrinktiNugaletojus(int n, int &r, Slidininkas mas1[], Slidininkas mas2[]) {
     for(int i = 0; i < n; i++) {
-        if(!slidininkai[i].diskv && slidininkai[i].lMin >= 30 && slidininkai[i].lSek > 0) {
-            slidininkai[i].diskv = true;
-        } else if(!slidininkai[i].diskv) {
-            swap(slidininkai[i], nugaletojai[r]);
+        if(!mas1[i].diskv && mas1[i].lMin >= 30 && mas1[i].lSek > 0) {
+            mas1[i].diskv = true;
+        } else if(!mas1[i].diskv) {
+            swap(mas1[i], mas2[r]);
             r++;
         }
     }
 }
 
-void rusiuotiDidejanciai(int r, Slidininkas nugaletojai[]) {
+void rusiuotiDidejanciai(int r, Slidininkas mas[]) {
     for(int i = 0; i < r; i++) {
         for(int j = 0; j < r; j++) {
-            if(nugaletojai[i].skirtSek < nugaletojai[j].skirtSek) {
-                swap(nugaletojai[i], nugaletojai[j]);
+            if(mas[i].skirtSek < mas[j].skirtSek
+               || ((mas[i].skirtSek == mas[j].skirtSek)
+               && strcmp(mas[j].identInfo, mas[i].identInfo) > 0)) {
+                swap(mas[i], mas[j]);
             }
         }
     }
