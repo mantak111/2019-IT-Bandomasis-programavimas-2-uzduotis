@@ -74,6 +74,10 @@ void suskaiciuotiLaika(int n, Slidininkas slidininkai[]) {
             sLaikSek = (slidininkai[i].sVal*60*60)+(slidininkai[i].sMin*60)+slidininkai[i].sSek;
             fLaikSek = (slidininkai[i].fVal*60*60)+(slidininkai[i].fMin*60)+slidininkai[i].fSek;
             skirtSek = fLaikSek-sLaikSek;
+            if(skirtSek<0) {
+               skirtSek = 86400+skirtSek;
+            }
+
             slidininkai[i].lMin = (int)(skirtSek/60);
             slidininkai[i].lSek = skirtSek-slidininkai[i].lMin*60;
             slidininkai[i].skirtSek = skirtSek;
