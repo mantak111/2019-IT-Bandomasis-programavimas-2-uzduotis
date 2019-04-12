@@ -1,11 +1,10 @@
 #include <iostream>
 #include <fstream>
-#include <cmath>
 
 using namespace std;
 
 struct Slidininkas {
-    char identInfo[22];
+    char identInfo[21];
     int startoNr;
     int sVal, sMin, sSek;
     int fVal, fMin, fSek;
@@ -42,7 +41,8 @@ void skaityti(int &n, int &m, Slidininkas slidininkai[]) {
 
     fin >> n;
     for(int i = 0; i < n; i++) {
-        fin.get(slidininkai[i].identInfo, 22);
+        fin.ignore();
+        fin.get(slidininkai[i].identInfo, 21);
         fin >> slidininkai[i].startoNr;
         fin >> slidininkai[i].sVal;
         fin >> slidininkai[i].sMin;
@@ -86,7 +86,7 @@ void isrinktiNugaletojus(int n, int &r, Slidininkas slidininkai[], Slidininkas n
         if(!slidininkai[i].diskv && slidininkai[i].lMin >= 30 && slidininkai[i].lSek > 0) {
             slidininkai[i].diskv = true;
         } else if(!slidininkai[i].diskv) {
-            push(slidininkai[i], nugaletojai[r]);
+            swap(slidininkai[i], nugaletojai[r]);
             r++;
         }
     }
@@ -94,9 +94,9 @@ void isrinktiNugaletojus(int n, int &r, Slidininkas slidininkai[], Slidininkas n
 
 void rusiuotiDidejanciai(int r, Slidininkas nugaletojai[]) {
     for(int i = 0; i < r; i++) {
-        for(int j = 0; j > r; j++) {
+        for(int j = 0; j < r; j++) {
             if(nugaletojai[i].skirtSek < nugaletojai[j].skirtSek) {
-                push(nugaletojai[i], nugaletojai[j]);
+                swap(nugaletojai[i], nugaletojai[j]);
             }
         }
     }
@@ -106,7 +106,7 @@ void rasyti(int r, Slidininkas nugaletojai[]) {
     ofstream fout("U2rez.txt");
 
     for(int i = 0; i < r; i++) {
-        fout >> nugaletojai[i].identInfo << " " << nugaletojai[i].lMin << " " << nugaletojai[i].lSek << endl;
+        fout << nugaletojai[i].identInfo << " " << nugaletojai[i].lMin << " " << nugaletojai[i].lSek << endl;
     }
     fout.close();
 }
